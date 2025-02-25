@@ -5,15 +5,15 @@ export const client = new QueryClient();
 
 const apikey = process.env.NEXT_PUBLIC_API_KEY;
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: "https://api.unsplash.com/",
 });
 
-export const fetchApi = async () => {
+export const fetchApi = async (search: string) => {
   try {
     const res = await instance.get(`/search/photos`, {
       params: {
-        query: "random",
+        query: search || "random",
         client_id: apikey,
         per_page: 20,
       },
