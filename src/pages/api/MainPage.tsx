@@ -1,16 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
 import { fetchApi } from './UnsplashApi';
+import Link from 'next/link';
+import { CircularProgress } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const MainPage = () => {
   const [handler, setHandler] = useState('')
   const [search, setSearch] = useState('');
+  const router = useRouter()
 
   useEffect(() => {
     const delay = setTimeout(() => {
       setSearch(handler)
-    }, 500)
+    }, 1000)
 
+    localStorage.setItem("remember", search);
     return () => {clearTimeout(delay), setSearch('')};
   }, [handler])
 
@@ -20,7 +25,12 @@ const MainPage = () => {
   });
   console.log(data)
 
-  if (isLoading) return <h1>Loading...</h1>
+  useEffect(() => { 
+    setSearch(handler);  
+    setHandler("");
+  }, [router.asPath]); 
+
+  if (isLoading) return <CircularProgress></CircularProgress>
   if (error) return  <h1>Error accured while requesting data</h1>
 
   return (
@@ -36,20 +46,22 @@ const MainPage = () => {
             <input
               type="text"
               value={handler}
-              onChange={(e) => setHandler(e.target.value)}
+              onChange={(e) => {e.preventDefault(); setHandler(e.target.value)}}
               className="outline-none border-none transition-all bg-zinc-600 rounded-full p-2 px-5 focus:border-2 focus:outline-zinc-700 order-zinc-600  focus:bg-zinc-800"
             />
           </div>
         </div>
         <main className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 w-full max-w-screen-xl">
           {data?.results?.map((item: any) => (
-            <img
-              key={item.id}
-              className="w-full mb-4 rounded-sm shadow-lg break-inside-avoid"
-              src={item.urls.regular}
-              alt={item.alt_description || "Unsplash Image"}
-              loading='lazy'
-            />
+            <Link href={`/${item.id}`}>
+              <img
+                key={item.id}
+                className="w-full mb-4 rounded-sm shadow-lg break-inside-avoid"
+                src={item.urls.regular}
+                alt={item.alt_description || "Unsplash Image"}
+                loading="lazy"
+              />
+            </Link>
           ))}
         </main>
       </div>
