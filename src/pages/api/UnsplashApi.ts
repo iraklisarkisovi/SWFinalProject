@@ -18,6 +18,7 @@ export const fetchApi = async (search: string) => {
         per_page: 20,
       },
     });
+    
     return res.data;
   } catch (error) {
     console.error("Error fetching images:", error);

@@ -4,7 +4,7 @@ import { fetchApi } from './UnsplashApi';
 
 const MainPage = () => {
   const [handler, setHandler] = useState('')
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -15,10 +15,10 @@ const MainPage = () => {
   }, [handler])
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["querM"],
+    queryKey: ["querM", search],
     queryFn: () => fetchApi(search),
-    enabled: !!search,
   });
+  console.log(data)
 
   if (isLoading) return <h1>Loading...</h1>
   if (error) return  <h1>Error accured while requesting data</h1>
