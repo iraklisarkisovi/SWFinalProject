@@ -1,5 +1,7 @@
 import { Switch, styled } from "@mui/material";
 
+// Using Material UI for switch only in this case )
+
 export const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
   "& .MuiSwitch-track": {
