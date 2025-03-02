@@ -16,13 +16,12 @@ const fetchImageById = async (id: string) => {
 const Dpage = () => {
   const router = useRouter();
   const { dynamic } = router.query;
-  console.log(router.query.imag);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["image", dynamic],
     queryFn: () => fetchImageById(dynamic as string),
-    staleTime: 100 * 60 * 10,
-    cacheTime: 100 * 60 * 20,
+    staleTime: 1000 * 60 * 10,
+    cacheTime: 1000 * 60 * 20,
     enabled: !!dynamic,
   });
 
@@ -45,11 +44,13 @@ const Dpage = () => {
             ↖️ Back
           </div>
         </Link>
+        <Link href={data.urls.regular}>
         <img
           src={data.urls.regular}
           alt={data.alt_description || "Unsplash Image"}
           className="w-full max-w-lg rounded-md shadow-md"
         />
+        </Link>
         <h1 className="text-xl font-bold mt-4 max-w-xl break-words">
           {data.description || "Image Details"}
         </h1>
